@@ -29,6 +29,7 @@ Index of where things live. Append a row when you add a significant doc or top-l
 | `scripts/release-check.mjs` | Runs tests, packages the VSIX, and verifies Marketplace artifact contents. |
 | `docs/` | Design notes, architecture, external references. |
 | `docs/NAVIGATION.md` | This file. |
+| `docs/native-markdown-strategy.md` | Boundary between Slab workflow helpers and VS Code's native Markdown rendering. |
 | `docs/publishing.md` | Marketplace setup, local packaging checks, and publish/update flow. |
 | `comms/` | Messages written for another model: `HANDOFF_*` (next session) + `CONSULT_*` (external model). See `CLAUDE.md` → Protocols. |
 | `comms/HANDOFF_2026-04-17_1446.md` | Amended handoff locking raw-file attachment extraction, `.md` feedback, and JS-only Phase 2 decisions. |

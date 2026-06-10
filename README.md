@@ -1,6 +1,6 @@
 # slab-vscode
 
-Slab-inspired notebook and markdown helpers for VS Code, aimed at making Jupyter-based exercise writing calmer and less painful than a custom editor stack.
+Slab-inspired notebook and markdown helpers for VS Code, aimed at making Jupyter-based exercise writing calmer without competing with VS Code's native Markdown preview.
 
 ## Features
 
@@ -45,7 +45,8 @@ To try the extension inside VS Code:
 
 - Feedback files stay markdown-first. The extension is built around notebook authoring plus markdown review/export.
 - The sidebar is a control surface, not a renderer.
-- The external preview is live-updating and also includes a manual refresh button.
+- VS Code's native Markdown preview already renders KaTeX math and Mermaid; Slab defers to native rendering where it is enough.
+- The external preview is only for the second-screen browser workflow and includes a manual refresh button.
 - Marketplace publishing uses `@vscode/vsce` and the `VSCE_PAT` GitHub Actions secret.
 
 ## Layout
@@ -55,6 +56,7 @@ To try the extension inside VS Code:
 - `tests/` — tests
 - `scripts/` — automation and utilities
 - `docs/` — design notes, references, architecture
+- `docs/native-markdown-strategy.md` — boundary between Slab and VS Code's native Markdown renderer
 - `PROJECT_LOG.md` — append-only project memory: decisions, pivots, findings, risks
 - `comms/` — messages written for another model: session handoffs + consults (see `CLAUDE.md` → Protocols)
 

@@ -31,8 +31,10 @@ Full set in `../.agent/CONVENTIONS.md`; inlined so a standalone clone still has 
 <!-- Rules unique to THIS project only. Generic rules live in ../.agent/CONVENTIONS.md. -->
 
 - **Push after big milestones** — after each substantial verified milestone, commit and push the work unless the user explicitly asks not to, the remote/credentials are unavailable, or the worktree contains unrelated changes that need user confirmation first. State clearly when pushing is skipped and why.
+- **Defer to native Markdown** — VS Code's built-in Markdown preview/notebook Markdown renderer owns standard rendering features such as KaTeX math, Mermaid, scroll sync, and preview customization. Slab should add workflow and authoring helpers around notebooks/review export, not a competing renderer, unless a concrete workflow gap is documented first.
 
 ## Learned conventions
 
 <!-- Append-only. `YYYY-MM-DD: <fact>`. -->
 - 2026-06-10: Push after each big verified milestone when a remote and credentials are available; otherwise report the blocker explicitly.
+- 2026-06-10: Keep Slab aligned with VS Code native Markdown rendering; defer or delete overlapping renderer features when native behavior is sufficient.

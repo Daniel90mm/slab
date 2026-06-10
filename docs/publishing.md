@@ -31,6 +31,8 @@ code --install-extension slab-vscode-0.1.0.vsix
 
 ## Publish from GitHub
 
+The intended public repository is `https://github.com/Daniel90mm/slab`.
+
 1. Update `CHANGELOG.md`.
 2. Update `version` in `package.json`.
 3. Commit the release.

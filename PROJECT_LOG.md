@@ -16,7 +16,7 @@ Hand-curated orientation block. **Read this first; it saves reading the whole hi
 - **Current direction:** Slab is an MVP VS Code extension for markdown/notebook math authoring, scaffold-to-notebook creation, review export, sidebar controls, external MathJax preview, and VSIX release packaging.
 - **Open threads:** Marketplace publishing needs the `slab-notebooks` publisher to exist or `package.json.publisher` to be changed, plus a `VSCE_PAT` GitHub secret.
 - **Do not repeat:** Do not package local thesis scratch files into the VSIX; `.vscodeignore` excludes them.
-- **Next likely step:** Configure the Marketplace publisher/PAT, run `npm run release:check`, then push a `v0.1.0` tag to exercise `.github/workflows/publish.yml`.
+- **Next likely step:** Configure the Marketplace publisher/PAT, run `npm run release:check`, then push a `v0.1.0` tag to exercise `.github/workflows/publish.yml` from the public `Daniel90mm/slab` repo.
 
 ## When to append
 
@@ -124,3 +124,15 @@ exactly, e.g. `v0.1.0` for version `0.1.0`. `scripts/release-check.mjs` enforces
 this when `GITHUB_REF_TYPE=tag`, so an accidental mismatched tag fails before
 packaging or publishing. This keeps iterative Marketplace updates aligned with
 the version shown in the VSIX manifest.
+
+## 2026-06-10 - Native Markdown boundary
+
+Type: Decision
+
+Slab should align with VS Code's native Markdown preview and notebook Markdown
+renderer instead of replacing them. Native VS Code already renders KaTeX math,
+Mermaid diagrams, and common Markdown preview workflows, so Slab should focus on
+authoring helpers, `.md <-> .ipynb` workflow, review export, sidebar controls,
+and second-screen preview where that workflow is genuinely distinct. Future
+overlap with native VS Code behavior should default to deferral, narrowing, or
+deletion unless a concrete gap is documented.

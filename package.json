@@ -1,11 +1,19 @@
 {
   "name": "slab-vscode",
   "displayName": "Slab for Notebooks",
-  "description": "Slab-inspired notebook and markdown helpers for VS Code.",
+  "description": "Slab-inspired notebook and markdown helpers that complement VS Code's native Markdown preview.",
   "version": "0.1.0",
   "publisher": "slab-notebooks",
   "license": "UNLICENSED",
   "pricing": "Free",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Daniel90mm/slab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Daniel90mm/slab/issues"
+  },
+  "homepage": "https://github.com/Daniel90mm/slab#readme",
   "galleryBanner": {
     "color": "#111111",
     "theme": "dark"
@@ -156,9 +164,9 @@
     "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/extract-attachments.mjs && node ./tests/smoke/flatten-notebook.mjs && node ./tests/smoke/scaffold-to-notebook.mjs && node ./tests/smoke/command-roundtrip.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs",
     "test": "npm run smoke",
     "vscode:prepublish": "npm run smoke",
-    "package:vsix": "vsce package --allow-missing-repository",
+    "package:vsix": "vsce package",
     "release:check": "node ./scripts/release-check.mjs",
-    "deploy": "vsce publish --allow-missing-repository"
+    "deploy": "vsce publish"
   },
   "devDependencies": {
     "@vscode/vsce": "^3.9.2"
