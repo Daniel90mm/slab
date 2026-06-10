@@ -1,0 +1,166 @@
+{
+  "name": "slab-vscode",
+  "displayName": "Slab for Notebooks",
+  "description": "Slab-inspired notebook and markdown helpers for VS Code.",
+  "version": "0.1.0",
+  "publisher": "slab-notebooks",
+  "license": "UNLICENSED",
+  "pricing": "Free",
+  "galleryBanner": {
+    "color": "#111111",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.115.0"
+  },
+  "icon": "media/slab-marketplace.png",
+  "categories": [
+    "Notebooks",
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "jupyter",
+    "notebook",
+    "markdown",
+    "latex",
+    "math",
+    "slab"
+  ],
+  "activationEvents": [
+    "onCommand:slab.notebookPreviewMode",
+    "onCommand:slab.createNotebookFromScaffold",
+    "onCommand:slab.exportNotebookForReview",
+    "onCommand:slab.insertInlineMath",
+    "onCommand:slab.insertDisplayMath",
+    "onCommand:slab.insertEquation",
+    "onCommand:slab.insertAlign",
+    "onView:slab.sidebar",
+    "onLanguage:markdown"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "slab",
+          "title": "Slab",
+          "icon": "media/slab-activity.svg"
+        }
+      ]
+    },
+    "views": {
+      "slab": [
+        {
+          "type": "webview",
+          "id": "slab.sidebar",
+          "name": "Slab",
+          "visibility": "visible"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "slab.notebookPreviewMode",
+        "title": "Slab: Open Preview",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.createNotebookFromScaffold",
+        "title": "Slab: Create Notebook From Scaffold",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.exportNotebookForReview",
+        "title": "Slab: Export Notebook For Review",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.insertInlineMath",
+        "title": "Slab: Insert Inline Math",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.insertDisplayMath",
+        "title": "Slab: Insert Display Math",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.insertEquation",
+        "title": "Slab: Insert Equation Environment",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.insertAlign",
+        "title": "Slab: Insert Align Environment",
+        "category": "Slab"
+      }
+    ],
+    "configuration": {
+      "title": "Slab",
+      "properties": {
+        "slab.preferNotebookMarkdown": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prefer markdown notebook cells over standalone markdown files when Slab helpers are available."
+        },
+        "slab.showStatusBarEntry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a Slab status bar entry when a markdown file or markdown notebook cell is active."
+        },
+        "slab.activeTheme": {
+          "type": "string",
+          "default": "default",
+          "description": "Currently applied Slab LaTeX theme preset."
+        },
+        "slab.latexColors.environmentKeyword": {
+          "type": "string",
+          "default": "#f4d35e",
+          "description": "Color for LaTeX environment keywords like \\begin and \\end."
+        },
+        "slab.latexColors.environmentName": {
+          "type": "string",
+          "default": "#ff6b6b",
+          "description": "Color for LaTeX environment names like equation and bmatrix."
+        },
+        "slab.latexColors.greek": {
+          "type": "string",
+          "default": "#ff9f6e",
+          "description": "Color for Greek LaTeX commands like \\alpha, \\beta, and \\theta."
+        },
+        "slab.latexColors.command": {
+          "type": "string",
+          "default": "#27d797",
+          "description": "Color for general LaTeX commands like \\frac, \\mathbb, and \\mathbf."
+        },
+        "slab.latexColors.inlineMath": {
+          "type": "string",
+          "default": "#7dcfff",
+          "description": "Color for inline math spans like $...$."
+        },
+        "slab.latexColors.blockMathForeground": {
+          "type": "string",
+          "default": "#89ddff",
+          "description": "Foreground color for block math spans like $$...$$."
+        },
+        "slab.latexColors.blockMathBackground": {
+          "type": "string",
+          "default": "rgba(125, 207, 255, 0.08)",
+          "description": "Background color for block math spans like $$...$$."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/extract-attachments.mjs && node ./tests/smoke/flatten-notebook.mjs && node ./tests/smoke/scaffold-to-notebook.mjs && node ./tests/smoke/command-roundtrip.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs",
+    "test": "npm run smoke",
+    "vscode:prepublish": "npm run smoke",
+    "package:vsix": "vsce package --allow-missing-repository",
+    "release:check": "node ./scripts/release-check.mjs",
+    "deploy": "vsce publish --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.9.2"
+  }
+}
