@@ -11,12 +11,12 @@ bottom.
 
 Hand-curated orientation block. **Read this first; it saves reading the whole history.** Keep it short -- move resolved items down into the entry trail.
 
-- **Last updated:** 2026-06-10
+- **Last updated:** 2026-06-11
 - **Status:** active
-- **Current direction:** Slab is an MVP VS Code extension for markdown/notebook math authoring, scaffold-to-notebook creation, review export, sidebar controls, external MathJax preview, and VSIX release packaging.
-- **Open threads:** Marketplace publishing needs the `slab-notebooks` publisher to exist or `package.json.publisher` to be changed, plus a `VSCE_PAT` GitHub secret.
-- **Do not repeat:** Do not package local thesis scratch files into the VSIX; `.vscodeignore` excludes them.
-- **Next likely step:** Configure the Marketplace publisher/PAT, run `npm run release:check`, then push a `v0.1.0` tag to exercise `.github/workflows/publish.yml` from the public `Daniel90mm/slab` repo.
+- **Current direction:** Slab is a lightweight markdown-only companion for Culmen study notes: themed external popout preview, theme presets driving editor + popout, LaTeX/asset-path completions, and pipe-table editing helpers. The notebook pipeline is being deleted per the 2026-06-11 re-scope spec.
+- **Open threads:** Marketplace publishing needs the `slab-notebooks` publisher to exist or `package.json.publisher` to be changed, plus a `VSCE_PAT` GitHub secret; revisit branding/publisher after the re-scope lands.
+- **Do not repeat:** Do not package local thesis scratch files into the VSIX; `.vscodeignore` excludes them. Do not switch image links to HTML `<img>` tags — Culmen's asset scanner only reads `![](assets/...)`.
+- **Next likely step:** Implement the markdown-only re-scope per `docs/superpowers/specs/2026-06-11-markdown-companion-rescope-design.md` (prune notebook pipeline, themed popout, table helpers, asset paste/completion), then re-run `npm run smoke` and release checks.
 
 ## When to append
 
@@ -136,3 +136,22 @@ authoring helpers, `.md <-> .ipynb` workflow, review export, sidebar controls,
 and second-screen preview where that workflow is genuinely distinct. Future
 overlap with native VS Code behavior should default to deferral, narrowing, or
 deletion unless a concrete gap is documented.
+
+## 2026-06-11 - Markdown-only re-scope (notebook pipeline deleted)
+
+Type: Pivot
+
+Slab narrows to a lightweight markdown companion for Culmen: themed external
+popout preview, theme presets driving editor + popout together, LaTeX +
+asset-path completions, and pipe-table editing helpers. The `.ipynb` pipeline
+(scaffold-to-notebook, review export, attachment extraction) is deleted.
+Tracing the Culmen loop showed Culmen is markdown-native end to end: the
+scaffold is written to `<Concept>/<Concept>.md`, Review Notes reads that same
+linked file, and the asset scanner only parses `![](assets/...)` — so the
+notebook detour created dual sources of truth and an unclosed review loop.
+Runnable code falls back to native VS Code Jupyter outside the review loop.
+Image paste is steered to `assets/` via native `markdown.copyFiles.destination`;
+HTML `<img>` resizing was rejected as invisible to Culmen. Deferred: file-based
+image resize, popout image zoom, unused-asset cleanup, scaffold-section
+snippets. Spec:
+`docs/superpowers/specs/2026-06-11-markdown-companion-rescope-design.md`.
