@@ -1,8 +1,8 @@
 {
   "name": "slab-vscode",
-  "displayName": "Slab for Notebooks",
-  "description": "Slab-inspired notebook and markdown helpers that complement VS Code's native Markdown preview.",
-  "version": "0.1.0",
+  "displayName": "Slab",
+  "description": "Lightweight markdown companion for Culmen study notes: themed external preview, LaTeX and table authoring helpers, and Culmen-friendly image handling.",
+  "version": "0.2.0",
   "publisher": "slab-notebooks",
   "license": "UNLICENSED",
   "pricing": "Free",
@@ -23,16 +23,14 @@
   },
   "icon": "media/slab-marketplace.png",
   "categories": [
-    "Notebooks",
-    "Programming Languages",
     "Other"
   ],
   "keywords": [
-    "jupyter",
-    "notebook",
     "markdown",
     "latex",
     "math",
+    "tables",
+    "culmen",
     "slab"
   ],
   "activationEvents": [
@@ -90,11 +88,6 @@
     "configuration": {
       "title": "Slab",
       "properties": {
-        "slab.preferNotebookMarkdown": {
-          "type": "boolean",
-          "default": true,
-          "description": "Prefer markdown notebook cells over standalone markdown files when Slab helpers are available."
-        },
         "slab.showStatusBarEntry": {
           "type": "boolean",
           "default": true,
@@ -144,7 +137,7 @@
     }
   },
   "scripts": {
-    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/extract-attachments.mjs && node ./tests/smoke/flatten-notebook.mjs && node ./tests/smoke/scaffold-to-notebook.mjs && node ./tests/smoke/command-roundtrip.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs",
+    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs",
     "test": "npm run smoke",
     "vscode:prepublish": "npm run smoke",
     "package:vsix": "vsce package",
