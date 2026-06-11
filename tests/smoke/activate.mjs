@@ -3,18 +3,8 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const extension = require("../../src/extension.js");
 
-const notebookSurface = extension.resolveSlabSurface({
-  languageId: "markdown",
-  notebookType: "jupyter-notebook",
-  uriScheme: "vscode-notebook-cell",
-});
-
-if (!notebookSurface.isNotebookMarkdown) {
-  throw new Error("Expected a Jupyter markdown cell to be detected as notebook markdown.");
-}
-
-if (!notebookSurface.canEnablePreviewMode) {
-  throw new Error("Expected preview mode to be available for notebook markdown.");
+if (extension.COMMAND_ID !== "slab.openPreview") {
+  throw new Error(`Expected the preview command id to be slab.openPreview, got ${extension.COMMAND_ID}.`);
 }
 
 const markdownSurface = extension.resolveSlabSurface({
@@ -22,40 +12,50 @@ const markdownSurface = extension.resolveSlabSurface({
   uriScheme: "file",
 });
 
-if (extension.buildStatusBarText(notebookSurface) !== "Slab: Notebook") {
-  throw new Error("Expected notebook markdown to use the notebook status bar label.");
+if (!markdownSurface.isMarkdown || !markdownSurface.canEnablePreviewMode) {
+  throw new Error("Expected a markdown file to enable preview mode.");
 }
 
-const markdownMessage = extension.buildMessage(markdownSurface, true);
+if (extension.buildStatusBarText(markdownSurface) !== "Slab: Markdown") {
+  throw new Error("Expected markdown documents to use the markdown status bar label.");
+}
+
+const markdownMessage = extension.buildMessage(markdownSurface);
 if (!markdownMessage.includes("external browser window")) {
-  throw new Error("Expected plain markdown messaging to describe the external preview.");
+  throw new Error("Expected markdown messaging to describe the external preview.");
 }
 
-if (!markdownMessage.includes("Notebooks are the preferred surface")) {
-  throw new Error("Expected plain markdown messaging to still recommend notebooks.");
+if (markdownMessage.toLowerCase().includes("notebook")) {
+  throw new Error("Expected markdown messaging to stop mentioning notebooks.");
 }
 
-const unsupportedSurface = extension.resolveSlabSurface({
-  languageId: "python",
-  notebookType: "jupyter-notebook",
+const unsupportedSurface = extension.resolveSlabSurface({ languageId: "python" });
+if (unsupportedSurface.canEnablePreviewMode) {
+  throw new Error("Expected preview mode to stay off for non-markdown documents.");
+}
+
+if (!extension.buildMessage(unsupportedSurface).includes("Open a markdown file")) {
+  throw new Error("Expected unsupported-surface messaging to steer the user toward markdown.");
+}
+
+const previewTarget = extension.resolvePreviewTarget({
+  document: { languageId: "markdown", uri: { scheme: "file" } },
 });
 
-if (unsupportedSurface.canEnablePreviewMode) {
-  throw new Error("Expected preview mode to stay off for non-markdown notebook cells.");
-}
-
-const unsupportedMessage = extension.buildMessage(unsupportedSurface, true);
-if (!unsupportedMessage.includes("Open a markdown file or notebook")) {
-  throw new Error("Expected unsupported-surface messaging to steer the user toward markdown or notebooks.");
-}
-
-const previewTarget = extension.resolvePreviewTarget(
-  { document: { languageId: "markdown", uri: { scheme: "file" } } },
-  { notebook: {} },
-);
-
 if (!previewTarget || previewTarget.kind !== "markdown") {
-  throw new Error("Expected a plain markdown file to win over an inactive notebook editor for preview.");
+  throw new Error("Expected a plain markdown file to be a preview target.");
+}
+
+const cellTarget = extension.resolvePreviewTarget({
+  document: { languageId: "markdown", uri: { scheme: "vscode-notebook-cell" } },
+});
+
+if (cellTarget !== null) {
+  throw new Error("Expected notebook cells to be rejected as preview targets.");
+}
+
+if (extension.resolvePreviewTarget(undefined) !== null) {
+  throw new Error("Expected a missing editor to produce no preview target.");
 }
 
 console.log(`Smoke passed for ${extension.COMMAND_ID}`);

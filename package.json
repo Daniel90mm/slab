@@ -36,15 +36,8 @@
     "slab"
   ],
   "activationEvents": [
-    "onCommand:slab.notebookPreviewMode",
-    "onCommand:slab.createNotebookFromScaffold",
-    "onCommand:slab.exportNotebookForReview",
-    "onCommand:slab.insertInlineMath",
-    "onCommand:slab.insertDisplayMath",
-    "onCommand:slab.insertEquation",
-    "onCommand:slab.insertAlign",
-    "onView:slab.sidebar",
-    "onLanguage:markdown"
+    "onLanguage:markdown",
+    "onView:slab.sidebar"
   ],
   "main": "./src/extension.js",
   "contributes": {
@@ -69,18 +62,8 @@
     },
     "commands": [
       {
-        "command": "slab.notebookPreviewMode",
+        "command": "slab.openPreview",
         "title": "Slab: Open Preview",
-        "category": "Slab"
-      },
-      {
-        "command": "slab.createNotebookFromScaffold",
-        "title": "Slab: Create Notebook From Scaffold",
-        "category": "Slab"
-      },
-      {
-        "command": "slab.exportNotebookForReview",
-        "title": "Slab: Export Notebook For Review",
         "category": "Slab"
       },
       {

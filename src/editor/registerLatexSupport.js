@@ -1,7 +1,6 @@
 const DOCUMENT_SELECTOR = [
   { language: "markdown", scheme: "file" },
   { language: "markdown", scheme: "untitled" },
-  { language: "markdown", scheme: "vscode-notebook-cell" },
 ];
 const GREEK_LETTERS = [
   "alpha", "beta", "gamma", "delta", "epsilon", "varepsilon", "zeta", "eta",

@@ -54,21 +54,16 @@ function registerSlabSidebar(vscode, getSurface) {
   return vscode.Disposable.from(
     vscode.window.registerWebviewViewProvider("slab.sidebar", provider),
     vscode.window.onDidChangeActiveTextEditor(() => provider.refresh()),
-    vscode.window.onDidChangeActiveNotebookEditor(() => provider.refresh()),
   );
 }
 
 function renderSidebarHtml(surface = {}, options = {}) {
-  const location = surface.isNotebookMarkdown
-    ? "Notebook markdown cell"
-    : surface.isMarkdown
-      ? "Markdown document"
-      : "Non-markdown surface";
+  const location = surface.isMarkdown ? "Markdown document" : "Non-markdown surface";
   const activeTheme = options.activeTheme || "default";
   const presets = options.presets || {};
   const support = surface.isMarkdown
     ? "Use the controls below to insert math, apply themes, and run the core Slab commands."
-    : "Open a markdown file or notebook markdown cell, then use the controls below.";
+    : "Open a markdown file, then use the controls below.";
   const presetCards = Object.entries(presets)
     .map(([id, preset]) => renderPresetCard(id, preset, activeTheme === id))
     .join("");
@@ -246,21 +241,7 @@ function renderSidebarHtml(surface = {}, options = {}) {
           </span>
           <span aria-hidden="true">↗</span>
         </button>
-        <button class="action" onclick="runCommand('slab.createNotebookFromScaffold')">
-          <span>
-            <span class="action-title">Create Notebook</span><br />
-            <span class="action-note">Turn a scaffold markdown file into a working notebook.</span>
-          </span>
-          <span aria-hidden="true">↗</span>
-        </button>
-        <button class="action" onclick="runCommand('slab.exportNotebookForReview')">
-          <span>
-            <span class="action-title">Export Review</span><br />
-            <span class="action-note">Flatten the current notebook back to review markdown.</span>
-          </span>
-          <span aria-hidden="true">↗</span>
-        </button>
-        <button class="action" onclick="runCommand('slab.notebookPreviewMode')">
+        <button class="action" onclick="runCommand('slab.openPreview')">
           <span>
             <span class="action-title">Open Preview</span><br />
             <span class="action-note">Open a live compiled preview in your external browser window.</span>
