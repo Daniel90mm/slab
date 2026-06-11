@@ -11,6 +11,15 @@ const SLAB_THEME_PRESETS = {
       blockMathForeground: "#89ddff",
       blockMathBackground: "rgba(125, 207, 255, 0.08)",
     },
+    popout: {
+      colorScheme: "dark",
+      background: "#111111",
+      surface: "#171717",
+      text: "#f2efe8",
+      muted: "#9a9488",
+      accent: "#27d797",
+      border: "#2c2c2c",
+    },
   },
   miami: {
     label: "Miami",
@@ -23,6 +32,15 @@ const SLAB_THEME_PRESETS = {
       inlineMath: "#6ad6ff",
       blockMathForeground: "#ff8cf5",
       blockMathBackground: "rgba(255, 79, 163, 0.12)",
+    },
+    popout: {
+      colorScheme: "dark",
+      background: "#14101c",
+      surface: "#1c1626",
+      text: "#f5ecff",
+      muted: "#9b8fb0",
+      accent: "#ff4fa3",
+      border: "#322843",
     },
   },
   crystal: {
@@ -37,6 +55,15 @@ const SLAB_THEME_PRESETS = {
       blockMathForeground: "#e9d5ff",
       blockMathBackground: "rgba(186, 230, 253, 0.10)",
     },
+    popout: {
+      colorScheme: "dark",
+      background: "#0d1420",
+      surface: "#131c2c",
+      text: "#e8f4ff",
+      muted: "#8fa3bd",
+      accent: "#93c5fd",
+      border: "#233448",
+    },
   },
   sand: {
     label: "Sand",
@@ -49,6 +76,15 @@ const SLAB_THEME_PRESETS = {
       inlineMath: "#f4f1de",
       blockMathForeground: "#f7d794",
       blockMathBackground: "rgba(242, 204, 143, 0.10)",
+    },
+    popout: {
+      colorScheme: "dark",
+      background: "#1a1612",
+      surface: "#221d17",
+      text: "#f4f1de",
+      muted: "#a89a85",
+      accent: "#f6bd60",
+      border: "#38302a",
     },
   },
   papyrus: {
@@ -63,9 +99,25 @@ const SLAB_THEME_PRESETS = {
       blockMathForeground: "#e9c46a",
       blockMathBackground: "rgba(212, 163, 115, 0.12)",
     },
+    popout: {
+      colorScheme: "light",
+      background: "#f7f1e3",
+      surface: "#efe6d2",
+      text: "#2b2419",
+      muted: "#8a7d68",
+      accent: "#e76f51",
+      border: "#d8cbb2",
+    },
   },
 };
 
+function resolvePopoutPalette(presets, themeId) {
+  return presets?.[themeId]?.popout
+    || presets?.default?.popout
+    || SLAB_THEME_PRESETS.default.popout;
+}
+
 module.exports = {
   SLAB_THEME_PRESETS,
+  resolvePopoutPalette,
 };

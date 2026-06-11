@@ -12,6 +12,10 @@ const {
 const {
   registerExternalPreview,
 } = require("./preview/registerExternalPreview.js");
+const {
+  SLAB_THEME_PRESETS,
+  resolvePopoutPalette,
+} = require("./sidebar/slabThemes.js");
 
 function resolveSlabSurface({ languageId = "", uriScheme = "" } = {}) {
   const isMarkdown = languageId === "markdown";
@@ -81,7 +85,15 @@ function activate(context) {
     registerMathCommands(vscode),
     registerLatexSupport(vscode),
     registerSlabSidebar(vscode, () => getEditorSurface(vscode.window.activeTextEditor)),
-    registerExternalPreview(vscode, COMMAND_ID, () => buildPreviewDocument(vscode)),
+    registerExternalPreview(
+      vscode,
+      COMMAND_ID,
+      () => buildPreviewDocument(vscode),
+      () => resolvePopoutPalette(
+        SLAB_THEME_PRESETS,
+        vscode.workspace.getConfiguration("slab").get("activeTheme", "default"),
+      ),
+    ),
     vscode.window.onDidChangeActiveTextEditor((editor) => {
       void refresh(editor);
     }),

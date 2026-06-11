@@ -3,13 +3,14 @@ const http = require("node:http");
 const path = require("node:path");
 const { URL } = require("node:url");
 
-function registerExternalPreview(vscode, commandId, getPreviewDocument) {
+function registerExternalPreview(vscode, commandId, getPreviewDocument, getPopoutPalette) {
   const state = {
     server: null,
     refreshTimer: null,
     port: null,
     version: 0,
     current: null,
+    getPalette: typeof getPopoutPalette === "function" ? getPopoutPalette : () => null,
   };
 
   const scheduleRefresh = () => {
@@ -89,9 +90,6 @@ function registerExternalPreview(vscode, commandId, getPreviewDocument) {
     vscode.window.onDidChangeActiveTextEditor(() => {
       scheduleRefresh();
     }),
-    vscode.window.onDidChangeActiveNotebookEditor(() => {
-      scheduleRefresh();
-    }),
     vscode.workspace.onDidChangeTextDocument(() => {
       scheduleRefresh();
     }),
@@ -117,22 +115,25 @@ async function handleRequest(request, response, state) {
 
   if (url.pathname === "/preview") {
     response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-    response.end(renderPreviewShell());
+    response.end(renderPreviewShell(state.getPalette()));
     return;
   }
 
   if (url.pathname === "/api/document") {
     response.writeHead(200, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" });
+    const palette = state.getPalette();
     response.end(JSON.stringify(state.current ? {
       version: state.version,
       label: state.current.label,
       sourceLabel: state.current.sourceLabel,
       markdown: state.current.markdown,
+      palette,
     } : {
       version: state.version,
       label: "Slab Preview",
       sourceLabel: "Unavailable",
-      markdown: "Open a markdown file or notebook to preview compiled markdown, LaTeX, and images.",
+      markdown: "Open a markdown file to preview compiled markdown, LaTeX, and images.",
+      palette,
     }));
     return;
   }
@@ -165,7 +166,19 @@ async function handleRequest(request, response, state) {
   response.end("Not found");
 }
 
-function renderPreviewShell() {
+const FALLBACK_PALETTE = {
+  colorScheme: "dark",
+  background: "#111111",
+  surface: "#171717",
+  text: "#f2efe8",
+  muted: "#9a9488",
+  accent: "#27d797",
+  border: "#2c2c2c",
+};
+
+function renderPreviewShell(palette) {
+  const theme = { ...FALLBACK_PALETTE, ...(palette || {}) };
+
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -173,12 +186,18 @@ function renderPreviewShell() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       :root {
-        color-scheme: dark;
+        color-scheme: ${theme.colorScheme};
+        --slab-bg: ${theme.background};
+        --slab-surface: ${theme.surface};
+        --slab-text: ${theme.text};
+        --slab-muted: ${theme.muted};
+        --slab-accent: ${theme.accent};
+        --slab-border: ${theme.border};
       }
       body {
         margin: 0;
-        background: #111111;
-        color: #f2efe8;
+        background: var(--slab-bg);
+        color: var(--slab-text);
         font-family: Georgia, "Times New Roman", serif;
       }
       .shell {
@@ -197,7 +216,7 @@ function renderPreviewShell() {
         font: 600 11px/1.2 system-ui, sans-serif;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: #9a9488;
+        color: var(--slab-muted);
         margin-bottom: 6px;
       }
       h1 {
@@ -205,14 +224,18 @@ function renderPreviewShell() {
         font: 700 24px/1.05 system-ui, sans-serif;
       }
       button {
-        border: 1px solid #3a3a3a;
+        border: 1px solid var(--slab-border);
         background: transparent;
-        color: #f2efe8;
+        color: var(--slab-text);
         padding: 7px 12px;
         cursor: pointer;
         font: 500 12px/1.2 system-ui, sans-serif;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+      }
+      button:hover {
+        border-color: var(--slab-accent);
+        color: var(--slab-accent);
       }
       article {
         line-height: 1.7;
@@ -223,11 +246,14 @@ function renderPreviewShell() {
         line-height: 1.15;
         margin-top: 1.5em;
       }
+      article a {
+        color: var(--slab-accent);
+      }
       article pre {
         overflow-x: auto;
         padding: 12px 14px;
-        border: 1px solid #2c2c2c;
-        background: #171717;
+        border: 1px solid var(--slab-border);
+        background: var(--slab-surface);
       }
       article code {
         font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -244,13 +270,22 @@ function renderPreviewShell() {
         margin: 1.2em 0;
       }
       article th, article td {
-        border: 1px solid #333333;
+        border: 1px solid var(--slab-border);
         padding: 6px 8px;
         text-align: left;
       }
+      article th {
+        background: var(--slab-surface);
+      }
+      article blockquote {
+        margin: 1.2em 0;
+        padding: 2px 14px;
+        border-left: 2px solid var(--slab-accent);
+        color: var(--slab-muted);
+      }
       article hr {
         border: none;
-        border-top: 1px solid #2f2f2f;
+        border-top: 1px solid var(--slab-border);
         margin: 1.8em 0;
       }
     </style>
@@ -286,12 +321,28 @@ function renderPreviewShell() {
       const content = document.getElementById('content');
       const refreshButton = document.getElementById('refresh');
 
+      function applyPalette(palette) {
+        if (!palette) {
+          return;
+        }
+
+        const root = document.documentElement;
+        root.style.colorScheme = palette.colorScheme || 'dark';
+        root.style.setProperty('--slab-bg', palette.background);
+        root.style.setProperty('--slab-surface', palette.surface);
+        root.style.setProperty('--slab-text', palette.text);
+        root.style.setProperty('--slab-muted', palette.muted);
+        root.style.setProperty('--slab-accent', palette.accent);
+        root.style.setProperty('--slab-border', palette.border);
+      }
+
       async function applyPayload(payload) {
         if (!payload || payload.version === currentVersion) {
           return;
         }
 
         currentVersion = payload.version;
+        applyPalette(payload.palette);
         title.textContent = payload.label || 'Slab Preview';
         sourceLabel.textContent = payload.sourceLabel || 'Preview';
         content.innerHTML = marked.parse(payload.markdown || '', { gfm: true, breaks: false });
@@ -375,6 +426,7 @@ module.exports = {
   detectMimeType,
   isPathInsideBaseDir,
   registerExternalPreview,
+  renderPreviewShell,
   resolvePreviewAssetUrl,
   rewritePreviewAssetPaths,
 };
