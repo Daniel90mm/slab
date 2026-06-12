@@ -16,6 +16,9 @@ const {
   SLAB_THEME_PRESETS,
   resolvePopoutPalette,
 } = require("./sidebar/slabThemes.js");
+const {
+  registerTableHelpers,
+} = require("./editor/registerTableHelpers.js");
 
 function resolveSlabSurface({ languageId = "", uriScheme = "" } = {}) {
   const isMarkdown = languageId === "markdown";
@@ -84,6 +87,7 @@ function activate(context) {
     statusBar,
     registerMathCommands(vscode),
     registerLatexSupport(vscode),
+    registerTableHelpers(vscode),
     registerSlabSidebar(vscode, () => getEditorSurface(vscode.window.activeTextEditor)),
     registerExternalPreview(
       vscode,

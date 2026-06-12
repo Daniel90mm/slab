@@ -83,6 +83,53 @@
         "command": "slab.insertAlign",
         "title": "Slab: Insert Align Environment",
         "category": "Slab"
+      },
+      {
+        "command": "slab.formatTable",
+        "title": "Slab: Format Table",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.tableNextCell",
+        "title": "Slab: Table Next Cell",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.tablePrevCell",
+        "title": "Slab: Table Previous Cell",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.tableInsertRowBelow",
+        "title": "Slab: Table Insert Row Below",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.tableDeleteRow",
+        "title": "Slab: Table Delete Row",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.tableInsertColumnRight",
+        "title": "Slab: Table Insert Column Right",
+        "category": "Slab"
+      },
+      {
+        "command": "slab.tableDeleteColumn",
+        "title": "Slab: Table Delete Column",
+        "category": "Slab"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "tab",
+        "command": "slab.tableNextCell",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == markdown && slab.inTable && !suggestWidgetVisible && !inSnippetMode && !editorHasSelection"
+      },
+      {
+        "key": "shift+tab",
+        "command": "slab.tablePrevCell",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == markdown && slab.inTable && !suggestWidgetVisible && !inSnippetMode && !editorHasSelection"
       }
     ],
     "configuration": {
