@@ -4,12 +4,12 @@
 
 ## Project capsule
 
-- **Identity:** VS Code extension: Slab-inspired notebook + markdown helpers -- create `.ipynb` from markdown scaffolds, export back to review-friendly markdown, LaTeX-aware completions/math highlighting, and a live external-browser preview. Aimed at calmer Jupyter-based exercise writing.
+- **Identity:** VS Code extension: lightweight markdown companion for Culmen study notes -- themed external browser preview, LaTeX-aware completions/highlighting, pipe-table editing helpers, asset-path completion, and Culmen-friendly image paste defaults. Defers standard rendering to VS Code native.
 - **Status:** active
 - **Current goal:** <!-- the one thing in flight -->
 - **Hard constraints:** Has a UI (sidebar control surface) -- engage DESIGN_PRINCIPLES.md for UI changes. Keep the runtime simple; sidebar is a control surface, not a renderer.
-- **Primary commands:** `npm run smoke` (detection + .md<->.ipynb roundtrip); F5 launches the Extension Development Host.
-- **Key files:** `package.json` (manifest), `src/extension.js` (entrypoint), `src/preview/`, `src/sidebar/`, `src/editor/`.
+- **Primary commands:** `npm run smoke` (8 smoke scripts); F5 launches the Extension Development Host.
+- **Key files:** `package.json` (manifest), `src/extension.js` (entrypoint), `src/preview/`, `src/sidebar/`, `src/editor/`, `src/commands/`.
 
 ## Shared rules
 
@@ -31,7 +31,7 @@ Full set in `../.agent/CONVENTIONS.md`; inlined so a standalone clone still has 
 <!-- Rules unique to THIS project only. Generic rules live in ../.agent/CONVENTIONS.md. -->
 
 - **Push after big milestones** — after each substantial verified milestone, commit and push the work unless the user explicitly asks not to, the remote/credentials are unavailable, or the worktree contains unrelated changes that need user confirmation first. State clearly when pushing is skipped and why.
-- **Defer to native Markdown** — VS Code's built-in Markdown preview/notebook Markdown renderer owns standard rendering features such as KaTeX math, Mermaid, scroll sync, and preview customization. Slab should add workflow and authoring helpers around notebooks/review export, not a competing renderer, unless a concrete workflow gap is documented first.
+- **Defer to native Markdown** — VS Code's built-in Markdown preview owns standard rendering features such as KaTeX math, Mermaid, scroll sync, and preview customization. Slab should add workflow and authoring helpers, not a competing renderer, unless a concrete workflow gap is documented first.
 
 ## Learned conventions
 

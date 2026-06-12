@@ -1,65 +1,37 @@
-# slab-vscode
+# Slab
 
-Slab-inspired notebook and markdown helpers for VS Code, aimed at making Jupyter-based exercise writing calmer without competing with VS Code's native Markdown preview.
+Lightweight markdown companion for Culmen study notes — and for anyone writing math-heavy markdown in VS Code.
+
+Slab adds a themed external preview and small authoring helpers around VS Code's native markdown support. It deliberately does **not** replace anything VS Code already does well (preview rendering, KaTeX math in the built-in preview, image paste).
 
 ## Features
 
-- Create `.ipynb` notebooks from markdown scaffolds
-- Export notebooks back to review-friendly markdown
-- Auto-extract pasted notebook attachments during review export
-- Add LaTeX-aware completions and math highlighting to markdown surfaces
-- Insert inline math, display math, equation environments, and align environments from commands or the sidebar
-- Open a live compiled markdown/LaTeX preview in your external browser
-- Use the Slab sidebar as a control surface for themes and core commands
+- **External popout preview** — `Slab: Open Preview` renders the active markdown file with MathJax in your browser, on a second screen if you like. It live-updates as you type and follows the active Slab theme.
+- **Themes** — one preset recolors both the LaTeX highlighting in the editor and the popout preview. Switch from the Slab sidebar.
+- **LaTeX authoring** — completions for environments, commands, Greek letters, and symbols; math token highlighting; insert commands for inline/display math, equation, and align.
+- **Table editing** — Tab/Shift+Tab move between cells and keep the pipe table aligned; commands to format and to insert/delete rows and columns. Rendering stays native.
+- **Asset paths** — image link completion from the `assets/` folder next to your note, and a one-click setting so pasted images land in `assets/` (Culmen's workspace layout).
 
 ## Commands
 
-- `Slab: Create Notebook From Scaffold`
-- `Slab: Export Notebook For Review`
-- `Slab: Open Preview`
-- `Slab: Insert Inline Math`
-- `Slab: Insert Display Math`
-- `Slab: Insert Equation Environment`
-- `Slab: Insert Align Environment`
+| Command | What it does |
+| --- | --- |
+| `Slab: Open Preview` | Open the themed external browser preview |
+| `Slab: Format Table` | Re-align the pipe table under the cursor |
+| `Slab: Table Next/Previous Cell` | Move between table cells (bound to Tab/Shift+Tab inside tables) |
+| `Slab: Table Insert Row Below / Delete Row` | Row operations |
+| `Slab: Table Insert Column Right / Delete Column` | Column operations |
+| `Slab: Insert Inline/Display Math, Equation, Align` | Math snippets |
+| `Slab: Use Culmen Asset Layout` | Point `markdown.copyFiles.destination` at `assets/` |
+
+## Settings
+
+- `slab.activeTheme` — current theme preset
+- `slab.showStatusBarEntry` — toggle the status bar entry
+- `slab.latexColors.*` — individual LaTeX token colors (written by theme presets)
 
 ## Development
 
-```bash
-npm run smoke
-npm run package:vsix
-npm run release:check
-```
-
-The runtime stays intentionally simple: the extension manifest lives in `package.json`, the runtime entrypoint is `src/extension.js`, the adapter/command pipeline owns `.md <-> .ipynb`, and the smoke suite exercises both detection and roundtrip behavior without needing a full VS Code host session.
-
-To try the extension inside VS Code:
-
-1. Open this folder in VS Code.
-2. Press `F5`.
-3. Choose the `Run Extension` launch configuration if prompted.
-4. In the Extension Development Host window, open an `.ipynb` file.
-5. Run `Slab: Open Preview` from the command palette.
-6. Your default browser opens the live preview. Move that browser window to another screen if you want a second-screen layout.
-
-## Notes
-
-- Feedback files stay markdown-first. The extension is built around notebook authoring plus markdown review/export.
-- The sidebar is a control surface, not a renderer.
-- VS Code's native Markdown preview already renders KaTeX math and Mermaid; Slab defers to native rendering where it is enough.
-- The external preview is only for the second-screen browser workflow and includes a manual refresh button.
-- Marketplace publishing uses `@vscode/vsce` and the `VSCE_PAT` GitHub Actions secret.
-
-## Layout
-
-- `package.json` — VS Code extension manifest, command contributions, scripts
-- `src/` — application code
-- `tests/` — tests
-- `scripts/` — automation and utilities
-- `docs/` — design notes, references, architecture
-- `docs/native-markdown-strategy.md` — boundary between Slab and VS Code's native Markdown renderer
-- `PROJECT_LOG.md` — append-only project memory: decisions, pivots, findings, risks
-- `comms/` — messages written for another model: session handoffs + consults (see `CLAUDE.md` → Protocols)
-
-## Agent instructions
-
-See `CLAUDE.md` / `AGENTS.md` (mirrored).
+- `npm run smoke` — run all smoke tests
+- F5 in VS Code — launch the Extension Development Host
+- `npm run release:check` — full release gate (tests, packaging, VSIX contents)

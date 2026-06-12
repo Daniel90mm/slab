@@ -143,7 +143,7 @@
         "slab.showStatusBarEntry": {
           "type": "boolean",
           "default": true,
-          "description": "Show a Slab status bar entry when a markdown file or markdown notebook cell is active."
+          "description": "Show a Slab status bar entry when a markdown file is active."
         },
         "slab.activeTheme": {
           "type": "string",

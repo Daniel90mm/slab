@@ -26,7 +26,7 @@ async function insertMathTemplate(vscode, kind) {
   const editor = vscode.window.activeTextEditor;
   if (!isMarkdownEditor(editor)) {
     await vscode.window.showInformationMessage(
-      "Open a markdown file or notebook markdown cell before inserting Slab math.",
+      "Open a markdown file before inserting Slab math.",
     );
     return;
   }
