@@ -184,7 +184,7 @@
     }
   },
   "scripts": {
-    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs && node ./tests/smoke/popout-theme.mjs && node ./tests/smoke/table-model.mjs",
+    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs && node ./tests/smoke/popout-theme.mjs && node ./tests/smoke/table-model.mjs && node ./tests/smoke/asset-paths.mjs",
     "test": "npm run smoke",
     "vscode:prepublish": "npm run smoke",
     "package:vsix": "vsce package",

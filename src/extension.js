@@ -19,6 +19,9 @@ const {
 const {
   registerTableHelpers,
 } = require("./editor/registerTableHelpers.js");
+const {
+  registerAssetCompletion,
+} = require("./editor/registerAssetCompletion.js");
 
 function resolveSlabSurface({ languageId = "", uriScheme = "" } = {}) {
   const isMarkdown = languageId === "markdown";
@@ -88,6 +91,7 @@ function activate(context) {
     registerMathCommands(vscode),
     registerLatexSupport(vscode),
     registerTableHelpers(vscode),
+    registerAssetCompletion(vscode),
     registerSlabSidebar(vscode, () => getEditorSurface(vscode.window.activeTextEditor)),
     registerExternalPreview(
       vscode,
