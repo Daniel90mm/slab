@@ -14,32 +14,38 @@ function planCopyDestinationUpdate(existingGlobalValue) {
 
 function registerUseCulmenAssetLayoutCommand(vscode) {
   return vscode.commands.registerCommand(COMMAND_ID, async () => {
-    const config = vscode.workspace.getConfiguration("markdown");
-    const existing = config.inspect(DESTINATION_KEY)?.globalValue;
-    const plan = planCopyDestinationUpdate(existing);
+    try {
+      const config = vscode.workspace.getConfiguration("markdown");
+      const existing = config.inspect(DESTINATION_KEY)?.globalValue;
+      const plan = planCopyDestinationUpdate(existing);
 
-    if (plan === "noop") {
-      await vscode.window.showInformationMessage(
-        "Slab: pasted images already land in assets/ next to each note.",
-      );
-      return;
-    }
-
-    if (plan === "confirm") {
-      const choice = await vscode.window.showWarningMessage(
-        "markdown.copyFiles.destination already has a custom value. Replace it so pasted images land in assets/ next to each note?",
-        "Replace",
-        "Cancel",
-      );
-      if (choice !== "Replace") {
+      if (plan === "noop") {
+        await vscode.window.showInformationMessage(
+          "Slab: pasted images already land in assets/ next to each note.",
+        );
         return;
       }
-    }
 
-    await config.update(DESTINATION_KEY, CULMEN_DESTINATION, vscode.ConfigurationTarget.Global);
-    await vscode.window.showInformationMessage(
-      "Slab: pasted images will now be saved to assets/ next to each markdown note.",
-    );
+      if (plan === "confirm") {
+        const choice = await vscode.window.showWarningMessage(
+          "markdown.copyFiles.destination already has a custom value. Replace it so pasted images land in assets/ next to each note?",
+          "Replace",
+          "Cancel",
+        );
+        if (choice !== "Replace") {
+          return;
+        }
+      }
+
+      await config.update(DESTINATION_KEY, CULMEN_DESTINATION, vscode.ConfigurationTarget.Global);
+      await vscode.window.showInformationMessage(
+        "Slab: pasted images will now be saved to assets/ next to each markdown note (user setting).",
+      );
+    } catch (error) {
+      console.error("[slab.useCulmenAssetLayout]", error);
+      const message = error instanceof Error ? error.message : String(error);
+      await vscode.window.showErrorMessage(message);
+    }
   });
 }
 
