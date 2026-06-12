@@ -124,12 +124,12 @@
       {
         "key": "tab",
         "command": "slab.tableNextCell",
-        "when": "editorTextFocus && !editorReadonly && editorLangId == markdown && slab.inTable && !suggestWidgetVisible && !inSnippetMode && !editorHasSelection"
+        "when": "editorTextFocus && !editorReadonly && editorLangId == markdown && slab.inTable && !suggestWidgetVisible && !inSnippetMode && !editorHasSelection && !inlineSuggestionVisible"
       },
       {
         "key": "shift+tab",
         "command": "slab.tablePrevCell",
-        "when": "editorTextFocus && !editorReadonly && editorLangId == markdown && slab.inTable && !suggestWidgetVisible && !inSnippetMode && !editorHasSelection"
+        "when": "editorTextFocus && !editorReadonly && editorLangId == markdown && slab.inTable && !suggestWidgetVisible && !inSnippetMode && !editorHasSelection && !inlineSuggestionVisible"
       }
     ],
     "configuration": {

@@ -57,7 +57,7 @@ function registerTableHelpers(vscode) {
   const replaceTable = async (editor, table, formattedLines) => {
     const lastLineLength = editor.document.lineAt(table.end).text.length;
     const range = new vscode.Range(table.start, 0, table.end, lastLineLength);
-    await editor.edit((edit) => edit.replace(range, formattedLines.join("\n")));
+    return editor.edit((edit) => edit.replace(range, formattedLines.join("\n")));
   };
 
   const placeCursor = (editor, table, formattedLines, rowIndex, colIndex) => {
@@ -70,9 +70,9 @@ function registerTableHelpers(vscode) {
     const colIndex = Math.min(locateColumn(lines[cursor.line], cursor.character), table.columnCount - 1);
     const target = moveCell(table, cursor.line - table.start, colIndex, delta);
     const formatted = formatTable(table);
-    await replaceTable(editor, table, formatted);
+    const applied = await replaceTable(editor, table, formatted);
 
-    if (target) {
+    if (applied && target) {
       placeCursor(editor, table, formatted, target.rowIndex, target.colIndex);
     }
   });
