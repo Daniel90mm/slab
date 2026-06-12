@@ -326,14 +326,24 @@ function renderPreviewShell(palette) {
           return;
         }
 
+        const theme = {
+          colorScheme: 'dark',
+          background: '#111111',
+          surface: '#171717',
+          text: '#f2efe8',
+          muted: '#9a9488',
+          accent: '#27d797',
+          border: '#2c2c2c',
+          ...palette,
+        };
         const root = document.documentElement;
-        root.style.colorScheme = palette.colorScheme || 'dark';
-        root.style.setProperty('--slab-bg', palette.background);
-        root.style.setProperty('--slab-surface', palette.surface);
-        root.style.setProperty('--slab-text', palette.text);
-        root.style.setProperty('--slab-muted', palette.muted);
-        root.style.setProperty('--slab-accent', palette.accent);
-        root.style.setProperty('--slab-border', palette.border);
+        root.style.colorScheme = theme.colorScheme;
+        root.style.setProperty('--slab-bg', theme.background);
+        root.style.setProperty('--slab-surface', theme.surface);
+        root.style.setProperty('--slab-text', theme.text);
+        root.style.setProperty('--slab-muted', theme.muted);
+        root.style.setProperty('--slab-accent', theme.accent);
+        root.style.setProperty('--slab-border', theme.border);
       }
 
       async function applyPayload(payload) {
