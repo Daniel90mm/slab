@@ -72,6 +72,10 @@ function parseTable(lines, cursorLine) {
     rows.push(cells);
   }
 
+  if (separatorIndex === -1) {
+    return null;
+  }
+
   const columnCount = Math.max(...rows.map((row) => row.length));
 
   return {
@@ -152,6 +156,8 @@ function padCell(cell, width, alignment) {
   return cell + " ".repeat(gap);
 }
 
+// May return columnCount (one past the last cell) when the cursor sits at the
+// end of the line; callers must clamp to columnCount - 1.
 function locateColumn(lineText, character) {
   const text = String(lineText || "");
   let pipes = 0;

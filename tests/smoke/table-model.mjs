@@ -36,6 +36,14 @@ if (parseTable(lines, 0) !== null) {
   throw new Error("Expected parseTable to return null outside a table.");
 }
 
+if (parseTable(["| grep foo | sort"], 0) !== null) {
+  throw new Error("Expected a separator-less pipe line to be refused.");
+}
+
+if (parseTable(["| a | b |", "| c | d |"], 0) !== null) {
+  throw new Error("Expected a pipe block without a separator row to be refused.");
+}
+
 const table = parseTable(lines, 3);
 if (!table || table.start !== 1 || table.end !== 4) {
   throw new Error(`Expected table range 1-4, got ${JSON.stringify(table && [table.start, table.end])}.`);
