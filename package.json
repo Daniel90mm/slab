@@ -118,6 +118,11 @@
         "command": "slab.tableDeleteColumn",
         "title": "Slab: Table Delete Column",
         "category": "Slab"
+      },
+      {
+        "command": "slab.useCulmenAssetLayout",
+        "title": "Slab: Use Culmen Asset Layout",
+        "category": "Slab"
       }
     ],
     "keybindings": [
@@ -184,7 +189,7 @@
     }
   },
   "scripts": {
-    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs && node ./tests/smoke/popout-theme.mjs && node ./tests/smoke/table-model.mjs && node ./tests/smoke/asset-paths.mjs",
+    "smoke": "node ./tests/smoke/activate.mjs && node ./tests/smoke/block-math-delimiters.mjs && node ./tests/smoke/math-insertion.mjs && node ./tests/smoke/preview-assets.mjs && node ./tests/smoke/popout-theme.mjs && node ./tests/smoke/table-model.mjs && node ./tests/smoke/asset-paths.mjs && node ./tests/smoke/culmen-asset-layout.mjs",
     "test": "npm run smoke",
     "vscode:prepublish": "npm run smoke",
     "package:vsix": "vsce package",

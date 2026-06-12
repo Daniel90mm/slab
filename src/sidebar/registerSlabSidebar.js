@@ -248,6 +248,13 @@ function renderSidebarHtml(surface = {}, options = {}) {
           </span>
           <span aria-hidden="true">↗</span>
         </button>
+        <button class="action" onclick="runCommand('slab.useCulmenAssetLayout')">
+          <span>
+            <span class="action-title">Culmen Asset Layout</span><br />
+            <span class="action-note">Save pasted images to <code>assets/</code> next to the note.</span>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </button>
       </div>
     </section>
     <section class="section">

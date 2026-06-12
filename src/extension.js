@@ -22,6 +22,9 @@ const {
 const {
   registerAssetCompletion,
 } = require("./editor/registerAssetCompletion.js");
+const {
+  registerUseCulmenAssetLayoutCommand,
+} = require("./commands/useCulmenAssetLayout.js");
 
 function resolveSlabSurface({ languageId = "", uriScheme = "" } = {}) {
   const isMarkdown = languageId === "markdown";
@@ -92,6 +95,7 @@ function activate(context) {
     registerLatexSupport(vscode),
     registerTableHelpers(vscode),
     registerAssetCompletion(vscode),
+    registerUseCulmenAssetLayoutCommand(vscode),
     registerSlabSidebar(vscode, () => getEditorSurface(vscode.window.activeTextEditor)),
     registerExternalPreview(
       vscode,
