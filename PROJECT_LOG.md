@@ -11,12 +11,12 @@ bottom.
 
 Hand-curated orientation block. **Read this first; it saves reading the whole history.** Keep it short -- move resolved items down into the entry trail.
 
-- **Last updated:** 2026-06-11
+- **Last updated:** 2026-06-12
 - **Status:** active
-- **Current direction:** Slab is a lightweight markdown-only companion for Culmen study notes: themed external popout preview, theme presets driving editor + popout, LaTeX/asset-path completions, and pipe-table editing helpers. The notebook pipeline is being deleted per the 2026-06-11 re-scope spec.
+- **Current direction:** Slab is a shipped markdown-only companion for Culmen study notes at version 0.2.0: themed external popout preview, theme presets driving both the editor and the popout, pipe-table editing helpers, asset-path completion, and the Culmen asset layout command. The notebook pipeline has been deleted.
 - **Open threads:** Marketplace publishing needs the `slab-notebooks` publisher to exist or `package.json.publisher` to be changed, plus a `VSCE_PAT` GitHub secret; revisit branding/publisher after the re-scope lands.
 - **Do not repeat:** Do not package local thesis scratch files into the VSIX; `.vscodeignore` excludes them. Do not switch image links to HTML `<img>` tags — Culmen's asset scanner only reads `![](assets/...)`.
-- **Next likely step:** Implement the markdown-only re-scope per `docs/superpowers/specs/2026-06-11-markdown-companion-rescope-design.md` (prune notebook pipeline, themed popout, table helpers, asset paste/completion), then re-run `npm run smoke` and release checks.
+- **Next likely step:** Revisit Marketplace publishing — set up the publisher identity and `VSCE_PAT` secret, then tag `v0.2.0`.
 
 ## When to append
 
@@ -155,3 +155,15 @@ HTML `<img>` resizing was rejected as invisible to Culmen. Deferred: file-based
 image resize, popout image zoom, unused-asset cleanup, scaffold-section
 snippets. Spec:
 `docs/superpowers/specs/2026-06-11-markdown-companion-rescope-design.md`.
+
+## 2026-06-12 - Markdown companion re-scope shipped
+
+Type: Milestone
+
+The 2026-06-11 re-scope is implemented and verified: notebook pipeline deleted,
+preview command renamed to `slab.openPreview`, theme presets now style the
+popout preview, pipe-table editing helpers (Tab navigation, format, row/column
+ops) added with a pure `tableModel.js` core, asset-path completion reads the
+note's `assets/` folder, and `Slab: Use Culmen Asset Layout` points
+`markdown.copyFiles.destination` at `assets/`. `npm run smoke` (8 scripts) and
+`npm run release:check` pass at version 0.2.0.
