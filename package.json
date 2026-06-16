@@ -3,7 +3,7 @@
   "displayName": "Slab",
   "description": "Lightweight markdown companion for Culmen study notes: themed external preview, LaTeX and table authoring helpers, and Culmen-friendly image handling.",
   "version": "0.2.0",
-  "publisher": "slab-notebooks",
+  "publisher": "Slab-vscode",
   "license": "MIT",
   "pricing": "Free",
   "repository": {
