@@ -11,12 +11,12 @@ bottom.
 
 Hand-curated orientation block. **Read this first; it saves reading the whole history.** Keep it short -- move resolved items down into the entry trail.
 
-- **Last updated:** 2026-06-12
+- **Last updated:** 2026-06-16
 - **Status:** active
-- **Current direction:** Slab is a shipped markdown-only companion for Culmen study notes at version 0.2.0: themed external popout preview, theme presets driving both the editor and the popout, pipe-table editing helpers, asset-path completion, and the Culmen asset layout command. The notebook pipeline has been deleted.
-- **Open threads:** Marketplace publishing needs the `slab-notebooks` publisher to exist or `package.json.publisher` to be changed, plus a `VSCE_PAT` GitHub secret; revisit branding/publisher after the re-scope lands.
-- **Do not repeat:** Do not package local thesis scratch files into the VSIX; `.vscodeignore` excludes them. Do not switch image links to HTML `<img>` tags — Culmen's asset scanner only reads `![](assets/...)`.
-- **Next likely step:** Revisit Marketplace publishing — set up the publisher identity and `VSCE_PAT` secret, then tag `v0.2.0`.
+- **Current direction:** Slab v0.2.0 is **published live on the VS Code Marketplace** as `Slab-vscode.slab-vscode`. It is a markdown-only companion for Culmen study notes: themed external popout preview, theme presets driving both the editor and the popout, pipe-table editing helpers, asset-path completion, and the Culmen asset layout command. Licensed MIT.
+- **Open threads:** GitHub `VSCE_PAT` secret is not yet set, so the tag-triggered publish workflow can't run unattended — publishing has been done locally via `npx vsce login Slab-vscode` + `npm run deploy`. Optional polish before promoting widely: README screenshots/GIF, reconsider the `^1.115.0` engine floor, pick a more discoverable category than `Other`.
+- **Do not repeat:** Do not package local thesis scratch files into the VSIX; `.vscodeignore` excludes them. Do not switch image links to HTML `<img>` tags — Culmen's asset scanner only reads `![](assets/...)`. `media/` must stay whitelisted in `.gitignore` or CI/the publish workflow fail on the missing marketplace icon. The publisher ID in `package.json` must match the Marketplace exactly (`Slab-vscode`), or `vsce` fails with Access Denied.
+- **Next likely step:** Add the `VSCE_PAT` GitHub secret and tag `v0.2.0` to validate the automated publish path for the next release.
 
 ## When to append
 
@@ -167,3 +167,19 @@ ops) added with a pure `tableModel.js` core, asset-path completion reads the
 note's `assets/` folder, and `Slab: Use Culmen Asset Layout` points
 `markdown.copyFiles.destination` at `assets/`. `npm run smoke` (8 scripts) and
 `npm run release:check` pass at version 0.2.0.
+
+## 2026-06-16 - Published v0.2.0 to the VS Code Marketplace
+
+Type: Milestone
+
+Slab v0.2.0 went live on the Marketplace as `Slab-vscode.slab-vscode`
+(https://marketplace.visualstudio.com/items?itemName=Slab-vscode.slab-vscode).
+Three fixes were needed to get there, all committed to `main`: license switched
+from UNLICENSED to MIT (matches the README's "for anyone" framing); `media/`
+whitelisted in the whitelist-model `.gitignore` (the marketplace icon and
+activity SVG were untracked, so every CI run and the publish workflow would have
+failed `vsce package` on the missing icon); and `package.json.publisher` changed
+from the never-created `slab-notebooks` to the actual registered publisher
+`Slab-vscode` (the mismatch caused `vsce login` "Access Denied"). Published
+locally with `npx vsce login Slab-vscode` + `npm run deploy`; the PAT was minted
+in Azure DevOps with All-accessible-organizations + Marketplace/Manage scope.

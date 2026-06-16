@@ -4,10 +4,14 @@ Slab uses the official `@vscode/vsce` CLI for packaging and publishing.
 
 ## One-time Marketplace setup
 
-1. Create or select the Visual Studio Marketplace publisher named `slab-notebooks`.
-2. If that publisher ID is unavailable, update `publisher` in `package.json` before the first publish.
-3. Create a Marketplace personal access token with Marketplace Manage scope.
-4. Add the token as the GitHub Actions repository secret `VSCE_PAT`.
+1. The Visual Studio Marketplace publisher is `Slab-vscode` (matches `publisher` in `package.json`).
+   If you ever change the publisher, update `package.json` to the exact ID shown on the Marketplace
+   manage page — a mismatch causes `vsce` to fail with "Access Denied" on the publisher resource.
+2. Create a Marketplace personal access token in Azure DevOps (https://dev.azure.com), scoped to
+   **All accessible organizations** with **Marketplace → Manage**. Mint it in the same Microsoft-account
+   directory that owns the publisher, or verification fails.
+3. For local publishing, run `npx vsce login Slab-vscode` and paste the token.
+4. For automated publishing, add the token as the GitHub Actions repository secret `VSCE_PAT`.
 
 The official VS Code docs describe the required publisher, PAT, `vsce package`,
 and `vsce publish` flow:
