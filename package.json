@@ -2,7 +2,7 @@
   "name": "slab-vscode",
   "displayName": "Slab",
   "description": "Lightweight markdown companion for Culmen study notes: themed external preview, LaTeX and table authoring helpers, and Culmen-friendly image handling.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "Slab-vscode",
   "license": "MIT",
   "pricing": "Free",
@@ -19,11 +19,12 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.115.0"
+    "vscode": "^1.80.0"
   },
   "icon": "media/slab-marketplace.png",
   "categories": [
-    "Other"
+    "Formatters",
+    "Snippets"
   ],
   "keywords": [
     "markdown",

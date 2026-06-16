@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 — 2026-06-16
+
+- Lowered the minimum VS Code version from `^1.115.0` to `^1.80.0` to match the APIs actually used, widening the install base.
+- Changed Marketplace categories from `Other` to `Formatters` and `Snippets` for better discoverability.
+
 ## 0.2.0 — 2026-06-12
 
 Re-scoped Slab to a markdown-only companion for Culmen study notes.
