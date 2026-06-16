@@ -27,6 +27,8 @@
 !scripts/**
 !src/
 !src/**
+!media/
+!media/**
 !tests/
 !tests/**
 !comms/
