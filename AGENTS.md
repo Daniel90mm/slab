@@ -15,13 +15,15 @@ If you are a Codex agent and Daniel explicitly asks for parallel agents, subagen
 
 For non-interactive Codex delegation, use `codex exec` only with an explicit `--cd`, sandbox, and approval policy. Prefer separate git worktrees for concurrent write tasks.
 
-## Cross-project context (atlas)
+## Cross-project context and model coordination
 
-To discover what other projects exist and what reusable data/assets they hold, run `atlas find <topic>` or `atlas context <project>` (on PATH, from `computer-use/agent-delegation`). It harvests every project's capsule on demand, so names alone are not enough — `find` searches the substance (identities, assets, current state, edges). Hand work to the owning project via `baton`; do not re-read other repos.
+To discover what other projects exist and what reusable data/assets they hold, run `atlas find <topic>` or `atlas context <project>` (on PATH, from `computer-use/agent-delegation`). It harvests every project's capsule on demand, so names alone are not enough — `find` searches the substance (identities, assets, current state, edges). Hand work to another model with `baton <role> --task "..." --with-context <project>`; Baton pulls Atlas context directly, so do not copy-paste it or re-read the other repo.
 
 When you discover a real cross-project link or a reusable asset, record it in this project's `AGENTS.md` capsule (the `Assets:` line and the `## Related projects` section) so the next agent inherits it — that is how workspace interconnectedness compounds.
 
-`atlas` respects trust and walls: a `forbidden` project is never surfaced and a `private` one is labelled. Never pack `private`/walled context into a handoff a shareable or worker model would see.
+For a genuinely fresh pair of eyes, use `fireside --task "..."` to run independent answers, blind peer review, and chairman synthesis. Add `--read <files>` only when file context is necessary; Fireside applies the same trust/wall rules.
+
+Atlas, Baton, and Fireside respect trust and walls: `forbidden` content is withheld, and private context can go only to private-capable peers. Never bypass their gates or send private/walled context to a shareable worker.
 <!-- END MANAGED: agent-delegation -->
 
 
