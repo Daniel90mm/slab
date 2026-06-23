@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: pipe rows inside fenced code blocks (```` ``` ````/`~~~`) are no longer treated as tables, so the table commands can't reformat or corrupt literal code. `Tab` keeps its normal behavior inside code fences.
+
 ## 0.2.1 — 2026-06-16
 
 - Lowered the minimum VS Code version from `^1.115.0` to `^1.80.0` to match the APIs actually used, widening the install base.

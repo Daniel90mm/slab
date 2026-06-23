@@ -3,6 +3,7 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const {
   isTableLine,
+  isInsideFence,
   parseTable,
   formatTable,
   locateColumn,
@@ -148,6 +149,54 @@ if (narrowed.columnCount !== 1 || narrowed.rows[0].length !== 1) {
 const single = parseTable(["| only |", "| --- |"], 0);
 if (deleteColumn(single, 0) !== null) {
   throw new Error("Expected deleteColumn to refuse removing the last column.");
+}
+
+// --- fenced code blocks must not be mistaken for tables ---
+
+const fenced = [
+  "Prose.",
+  "```",
+  "| col_a | col_b |",
+  "| ----- | ----- |",
+  "| 1 | 2 |",
+  "```",
+  "Prose.",
+];
+
+if (!isInsideFence(fenced, 3)) {
+  throw new Error("Expected line 3 to be detected as inside the code fence.");
+}
+
+if (isInsideFence(fenced, 0) || isInsideFence(fenced, 6)) {
+  throw new Error("Expected lines outside the fence to be reported as outside.");
+}
+
+if (parseTable(fenced, 3) !== null) {
+  throw new Error("Expected parseTable to refuse a pipe block inside a code fence.");
+}
+
+// A real table that follows a closed fence must still parse (fence state resets).
+const afterFence = [
+  "```",
+  "code | here",
+  "```",
+  "| Name | Score |",
+  "| --- | --- |",
+  "| Ada | 9 |",
+];
+
+if (isInsideFence(afterFence, 4)) {
+  throw new Error("Expected the fence to close before the real table.");
+}
+
+if (parseTable(afterFence, 5) === null) {
+  throw new Error("Expected a real table after a closed fence to still parse.");
+}
+
+// Tilde fences count, and a ``` line inside a ~~~ block does not close it.
+const tildeFence = ["~~~", "| a | b |", "```", "| --- | --- |", "~~~"];
+if (!isInsideFence(tildeFence, 3)) {
+  throw new Error("Expected a ``` line inside a ~~~ fence to leave it open.");
 }
 
 console.log("Smoke passed for table model.");

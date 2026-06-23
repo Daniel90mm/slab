@@ -11,7 +11,7 @@ bottom.
 
 Hand-curated orientation block. **Read this first; it saves reading the whole history.** Keep it short -- move resolved items down into the entry trail.
 
-- **Last updated:** 2026-06-16
+- **Last updated:** 2026-06-23
 - **Status:** active
 - **Current direction:** Slab v0.2.0 is **published live on the VS Code Marketplace** as `Slab-vscode.slab-vscode`. It is a markdown-only companion for Culmen study notes: themed external popout preview, theme presets driving both the editor and the popout, pipe-table editing helpers, asset-path completion, and the Culmen asset layout command. Licensed MIT.
 - **Open threads:** GitHub `VSCE_PAT` secret is not yet set, so the tag-triggered publish workflow can't run unattended — publishing has been done locally via `npx vsce login Slab-vscode` + `npm run deploy`. Optional polish before promoting widely: README screenshots/GIF, reconsider the `^1.115.0` engine floor, pick a more discoverable category than `Other`.
@@ -183,3 +183,22 @@ from the never-created `slab-notebooks` to the actual registered publisher
 `Slab-vscode` (the mismatch caused `vsce login` "Access Denied"). Published
 locally with `npx vsce login Slab-vscode` + `npm run deploy`; the PAT was minted
 in Azure DevOps with All-accessible-organizations + Marketplace/Manage scope.
+
+## 2026-06-23 - Fixed: tables no longer detected inside fenced code blocks
+
+Type: Finding
+
+Closed the documented v1 limitation that pipe rows inside a fenced code block
+(```` ``` ````/`~~~`) were treated as a table -- `parseTable` detected one and
+`Slab: Format Table` would rewrite the literal code (confirmed: a fenced
+`| col_a | col_b |` block got reformatted). Added a pure `isInsideFence(lines,
+targetLine)` to `tableModel.js` (tracks fence open/close; a fence closes only on
+the same marker char, length >= the opener, and no trailing info string, so a
+``` line inside a `~~~` block stays content) and gated `parseTable` on it. Also
+made the `slab.inTable` context fence-aware in `registerTableHelpers.js`, so
+`Tab` keeps its normal indentation behavior inside code fences instead of being
+hijacked by the table-navigation keybinding. TDD: added fence cases to the
+table-model smoke test (5 new assertions); full `npm run smoke` (8 scripts)
+green. Remaining known limitation: CJK/emoji column widths use UTF-16 code-unit
+lengths and may visually misalign. No version bump / publish -- logged as
+Unreleased in CHANGELOG.

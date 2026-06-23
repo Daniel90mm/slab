@@ -5,9 +5,34 @@
  * The functions never touch lines outside the detected table block.
  */
 const SEPARATOR_CELL_PATTERN = /^:?-+:?$/;
+const FENCE_PATTERN = /^\s*(`{3,}|~{3,})(.*)$/;
 
 function isTableLine(line) {
   return String(line || "").trimStart().startsWith("|");
+}
+
+// True when `targetLine` sits inside a fenced code block (``` or ~~~), where a
+// pipe row that looks like a table is literal code, not a table to be rewritten.
+// A fence closes only on a line of the same character, at least as long, with no
+// trailing info string -- so a ``` inside a ~~~ block is content, not a close.
+function isInsideFence(lines, targetLine) {
+  const limit = Math.min(targetLine, Array.isArray(lines) ? lines.length : 0);
+  let fence = null;
+  for (let i = 0; i < limit; i += 1) {
+    const match = FENCE_PATTERN.exec(String(lines[i] || ""));
+    if (!match) {
+      continue;
+    }
+    const marker = match[1][0];
+    const length = match[1].length;
+    const info = match[2].trim();
+    if (!fence) {
+      fence = { marker, length };
+    } else if (marker === fence.marker && length >= fence.length && info === "") {
+      fence = null;
+    }
+  }
+  return fence !== null;
 }
 
 function findTableRange(lines, cursorLine) {
@@ -56,6 +81,10 @@ function isSeparatorRow(cells) {
 }
 
 function parseTable(lines, cursorLine) {
+  if (isInsideFence(lines, cursorLine)) {
+    return null;
+  }
+
   const range = findTableRange(lines, cursorLine);
   if (!range) {
     return null;
@@ -249,6 +278,7 @@ function deleteColumn(table, colIndex) {
 
 module.exports = {
   isTableLine,
+  isInsideFence,
   findTableRange,
   parseTable,
   formatTable,

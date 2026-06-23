@@ -1,8 +1,9 @@
-// Known v1 limitations: pipe lines inside fenced code blocks can still be
-// detected as tables if they include a separator-like row, and column widths
-// use UTF-16 code-unit lengths, so CJK/emoji cells may visually misalign.
+// Known v1 limitation: column widths use UTF-16 code-unit lengths, so CJK/emoji
+// cells may visually misalign. (Pipe rows inside fenced code blocks are now
+// ignored -- parseTable and the in-table context are fence-aware.)
 const {
   isTableLine,
+  isInsideFence,
   parseTable,
   formatTable,
   locateColumn,
@@ -19,12 +20,15 @@ const IN_TABLE_CONTEXT = "slab.inTable";
 function registerTableHelpers(vscode) {
   const updateContext = (editor = vscode.window.activeTextEditor) => {
     const document = editor?.document;
-    const inTable = Boolean(
-      document
-      && document.languageId === "markdown"
-      && editor.selection
-      && isTableLine(document.lineAt(editor.selection.active.line).text),
-    );
+    let inTable = false;
+    if (document && document.languageId === "markdown" && editor.selection) {
+      const line = editor.selection.active.line;
+      // Short-circuit on the common (non-table) line before the O(n) fence scan,
+      // so the cursor never claims the in-table context inside a code fence
+      // (which would otherwise hijack Tab from normal indentation).
+      inTable = isTableLine(document.lineAt(line).text)
+        && !isInsideFence(readLines(document), line);
+    }
     void vscode.commands.executeCommand("setContext", IN_TABLE_CONTEXT, inTable);
   };
 
